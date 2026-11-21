@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a reproducible import, export, or material problem.
+title: "[Bug] "
+body:
+  - type: input
+    id: maya
+    attributes:
+      label: Maya / Maya USD / operating system
+      placeholder: Maya 2023, Maya USD 0.16.0, Windows
+    validations:
+      required: true
+  - type: input
+    id: unreal
+    attributes:
+      label: Unreal version, if relevant
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Target mode
+      options:
+        - Standard Surface
+        - Simple Phong preview
+        - Legacy Phong
+        - USD Stage
+        - Unreal export
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps, expected result, and actual result
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Error details and minimal shareable sample
+      description: Remove private paths and customer data. State whether this happened in a working session or standalone Maya.

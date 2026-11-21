@@ -1,0 +1,22 @@
+#usda 1.0
+(
+    defaultPrim = "Demo"
+    metersPerUnit = 0.01
+    upAxis = "Y"
+    subLayers = [@02_texture_binding.usda@]
+)
+
+# Only change one input. Geometry, texture and binding compose from 02 and 01.
+over "Demo"
+{
+    over "Looks"
+    {
+        over "Red"
+        {
+            over "Surface"
+            {
+                float inputs:roughness = 0.1
+            }
+        }
+    }
+}

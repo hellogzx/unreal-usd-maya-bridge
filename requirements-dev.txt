@@ -1,0 +1,2 @@
+# Formatting only. Maya runtime uses its own bundled dependencies.
+black==24.10.0

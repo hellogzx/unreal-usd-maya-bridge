@@ -1,0 +1,51 @@
+#usda 1.0
+(
+    defaultPrim = "Demo"
+    metersPerUnit = 0.01
+    upAxis = "Y"
+)
+
+# This file describes geometry and shading; a renderer evaluates the shader.
+def Xform "Demo"
+{
+    def Mesh "Card" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        # A 200 cm x 200 cm card facing positive Z.
+        point3f[] points = [(-100, 0, 0), (100, 0, 0), (100, 200, 0), (-100, 200, 0)]
+        int[] faceVertexCounts = [4]
+        int[] faceVertexIndices = [0, 1, 2, 3]
+        float3[] extent = [(-100, 0, 0), (100, 200, 0)]
+        uniform token subdivisionScheme = "none"
+        normal3f[] normals = [(0, 0, 1)] (
+            interpolation = "constant"
+        )
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1)] (
+            interpolation = "vertex"
+        )
+        bool doubleSided = true
+
+        # Binding is separate from the material's shader connection.
+        rel material:binding = </Demo/Looks/Red>
+    }
+
+    def Scope "Looks"
+    {
+        def Material "Red"
+        {
+            token outputs:surface.connect = </Demo/Looks/Red/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.6, 0.04, 0.02)
+                float inputs:roughness = 0.4
+                float inputs:metallic = 0
+                # Omit opacity: the default is opaque. Maya USD 0.16.0 reports
+                # a scalar-to-color error when importing authored opacity to Phong.
+                token outputs:surface
+            }
+        }
+    }
+}

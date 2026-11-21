@@ -1,0 +1,176 @@
+#usda 1.0
+(
+    defaultPrim = "PBR_Demo"
+    metersPerUnit = 0.01
+    upAxis = "Y"
+)
+
+def Xform "PBR_Demo"
+{
+    def "Looks"
+    {
+        def Material "SeparateMaps"
+        {
+            token outputs:surface.connect = </PBR_Demo/Looks/SeparateMaps/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor.connect = </PBR_Demo/Looks/SeparateMaps/BaseColor.outputs:rgb>
+                float inputs:ior = 1.5
+                float inputs:metallic.connect = </PBR_Demo/Looks/SeparateMaps/Metallic.outputs:r>
+                normal3f inputs:normal.connect = </PBR_Demo/Looks/SeparateMaps/Normal.outputs:rgb>
+                float inputs:roughness.connect = </PBR_Demo/Looks/SeparateMaps/Roughness.outputs:r>
+                int inputs:useSpecularWorkflow = 0
+                token outputs:surface
+            }
+
+            def Shader "UV"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname = "st"
+                float2 outputs:result
+            }
+
+            def Shader "BaseColor"
+            {
+                uniform token info:id = "UsdUVTexture"
+                asset inputs:file = @textures/pbr_basecolor.png@
+                token inputs:sourceColorSpace = "sRGB"
+                float2 inputs:st.connect = </PBR_Demo/Looks/SeparateMaps/UV.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                color3f outputs:rgb
+            }
+
+            def Shader "Roughness"
+            {
+                uniform token info:id = "UsdUVTexture"
+                asset inputs:file = @textures/pbr_roughness.png@
+                token inputs:sourceColorSpace = "raw"
+                float2 inputs:st.connect = </PBR_Demo/Looks/SeparateMaps/UV.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                float outputs:r
+            }
+
+            def Shader "Metallic"
+            {
+                uniform token info:id = "UsdUVTexture"
+                asset inputs:file = @textures/pbr_metallic.png@
+                token inputs:sourceColorSpace = "raw"
+                float2 inputs:st.connect = </PBR_Demo/Looks/SeparateMaps/UV.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                float outputs:r
+            }
+
+            def Shader "Normal"
+            {
+                uniform token info:id = "UsdUVTexture"
+                float4 inputs:bias = (-1, -1, -1, 0)
+                asset inputs:file = @textures/pbr_normal.png@
+                float4 inputs:scale = (2, 2, 2, 1)
+                token inputs:sourceColorSpace = "raw"
+                float2 inputs:st.connect = </PBR_Demo/Looks/SeparateMaps/UV.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                normal3f outputs:rgb
+            }
+        }
+
+        def Material "SeparateMapsB"
+        {
+            token outputs:surface.connect = </PBR_Demo/Looks/SeparateMapsB/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor.connect = </PBR_Demo/Looks/SeparateMapsB/BaseColor.outputs:rgb>
+                float inputs:ior = 1.5
+                float inputs:metallic.connect = </PBR_Demo/Looks/SeparateMapsB/Metallic.outputs:r>
+                normal3f inputs:normal.connect = </PBR_Demo/Looks/SeparateMapsB/Normal.outputs:rgb>
+                float inputs:roughness.connect = </PBR_Demo/Looks/SeparateMapsB/Roughness.outputs:r>
+                int inputs:useSpecularWorkflow = 0
+                token outputs:surface
+            }
+
+            def Shader "UV"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname = "st"
+                float2 outputs:result
+            }
+
+            def Shader "BaseColor"
+            {
+                uniform token info:id = "UsdUVTexture"
+                asset inputs:file = @textures/pbr_basecolor.png@
+                token inputs:sourceColorSpace = "sRGB"
+                float2 inputs:st.connect = </PBR_Demo/Looks/SeparateMapsB/UV.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                color3f outputs:rgb
+            }
+
+            def Shader "Roughness"
+            {
+                uniform token info:id = "UsdUVTexture"
+                asset inputs:file = @textures/pbr_roughness.png@
+                token inputs:sourceColorSpace = "raw"
+                float2 inputs:st.connect = </PBR_Demo/Looks/SeparateMapsB/UV.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                float outputs:r
+            }
+
+            def Shader "Metallic"
+            {
+                uniform token info:id = "UsdUVTexture"
+                asset inputs:file = @textures/pbr_metallic.png@
+                token inputs:sourceColorSpace = "raw"
+                float2 inputs:st.connect = </PBR_Demo/Looks/SeparateMapsB/UV.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                float outputs:r
+            }
+
+            def Shader "Normal"
+            {
+                uniform token info:id = "UsdUVTexture"
+                float4 inputs:bias = (-1, -1, -1, 0)
+                asset inputs:file = @textures/pbr_normal.png@
+                float4 inputs:scale = (2, 2, 2, 1)
+                token inputs:sourceColorSpace = "raw"
+                float2 inputs:st.connect = </PBR_Demo/Looks/SeparateMapsB/UV.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                normal3f outputs:rgb
+            }
+        }
+    }
+
+    def Mesh "SeparateMaps"
+    {
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [4, 5, 6, 7, 1, 0, 3, 2, 0, 4, 7, 3, 5, 1, 2, 6, 3, 7, 6, 2, 0, 1, 5, 4]
+        rel material:binding = </PBR_Demo/Looks/SeparateMaps>
+        point3f[] points = [(-230, 0, -50), (-30, 0, -50), (-30, 200, -50), (-230, 200, -50), (-230, 0, 50), (-30, 0, 50), (-30, 200, 50), (-230, 200, 50)]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1)] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "SeparateMapsB"
+    {
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [4, 5, 6, 7, 1, 0, 3, 2, 0, 4, 7, 3, 5, 1, 2, 6, 3, 7, 6, 2, 0, 1, 5, 4]
+        rel material:binding = </PBR_Demo/Looks/SeparateMapsB>
+        point3f[] points = [(30, 0, -50), (230, 0, -50), (230, 200, -50), (30, 200, -50), (30, 0, 50), (230, 0, 50), (230, 200, 50), (30, 200, 50)]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1)] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+}
