@@ -10,7 +10,8 @@ permissions:
 
 jobs:
   python:
-    runs-on: ubuntu-latest
+    # Maya 2023 uses Python 3.9; GitHub's Ubuntu 26.04 images lack that runtime.
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python: ['3.9', '3.12']
